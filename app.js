@@ -2,24 +2,17 @@ camp_states = new Map();
 
 camp_states.set("FE", [
     "AL",
-    "AR",
     "CA",
-    "IL",
-    "KS",
-    "MA",
+    "LA",
     "MI",
     "MO",
-    "MS",
-    "ND",
+    "NC",
     "NH",
-    "NE",
     "OH",
     "OK",
     "OR",
-    "SC",
     "TX",
     "VA",
-    "WV",
 ])
 
 camp_states.set("ACA", [
