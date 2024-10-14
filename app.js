@@ -1,147 +1,64 @@
-camp_states = new Map();
+let jsonUrl = "https://script.google.com/macros/s/AKfycbxwjrXvG5HKtsBWMp-zEQjavsljKm_ys6EsqpxknK0gCe4MqocZkaxI6qjTmshlngnv4w/exec";
 
-camp_states.set("FE", [
-    "AL",
-    "CA",
-    "LA",
-    "MI",
-    "MO",
-    "NC",
-    "NH",
-    "OH",
-    "OK",
-    "OR",
-    "TX",
-    "VA",
-])
+let jsonData = {};
 
-camp_states.set("ACA", [
-    "AL",
-    "AZ",
-    "DE",
-    "IA",
-    "IL",
-    "IN",
-    "KS",
-    "LA",
-    "MI",
-    "MO",
-    "MS",
-    "NE",
-    "NH",
-    "NY",
-    "OH",
-    "OK",
-    "SC",
-    "TX",
-    "UT",
-    "WI",
-    "WV",
-    "WY",
-])
+resultElement = document.getElementById('result');
 
-camp_states.set("SSDI", [
-    "AL",
-    "AR",
-    "AZ",
-    "CA",
-    "CO",
-    "CT",
-    "DC",
-    "DE",
-    "HI",
-    "IA",
-    "ID",
-    "IL",
-    "IN",
-    "KS",
-    "KY",
-    "LA",
-    "MA",
-    "MD",
-    "ME",
-    "MI",
-    "MN",
-    "MO",
-    "MS",
-    "MT",
-    "NC",
-    "ND",
-    "NE",
-    "NH",
-    "NJ",
-    "NM",
-    "NV",
-    "NY",
-    "OH",
-    "OK",
-    "OR",
-    "PA",
-    "RI",
-    "SC",
-    "SD",
-    "TN",
-    "TX",
-    "UT",
-    "VA",
-    "VT",
-    "WA",
-    "WI",
-    "WV",
-    "WY",
-])
+function errorDisplay(text, error) {
+    console.error(error);
+    resultElement.textContent = text;
+    resultElement.style.color = "red";
+}
 
-camp_states.set("MDQ", [
-    "AZ",
-    "CA",
-    "CO",
-    "CT",
-    "FL",
-    "GA",
-    "IA",
-    "IN",
-    "KY",
-    "LA",
-    "ME",
-    "MO",
-    "NH",
-    "NJ",
-    "NV",
-    "NY",
-    "OH",
-    "TN",
-    "TX",
-    "VA",
-    "WA",
-    "WI",
-])
-    
-resultElement = document.getElementById('result')
-
+function finishLoading() {
+    document.getElementById('form').style.display = "block";
+    resultElement.style.color = "black";
+    resultElement.textContent = "";
+}
 
 function check(){
     let is_state_exists = false;
-    inputtedState = document.getElementById('state').value.trim().toUpperCase()
+    inputtedState = document.getElementById('state').value.trim().toUpperCase();
 
-    resultElement.textContent = "Loading..."
-    resultElement.style.color = "black"
+    resultElement.textContent = "Loading...";
+    resultElement.style.color = "black";
 
-    camp_states.forEach((value, key, map) => {
-        if (value.includes(inputtedState)) {
+    if (!jsonData) {
+        errorDisplay("An error has occured!\n Please retry!", error);
+        return;
+    }
+
+    Object.entries(jsonData).forEach(([key, value]) => {
+
+        let hasState = value.find(state => state.code.includes(inputtedState));
+        
+        if (hasState) {
             if (!is_state_exists) {
                 is_state_exists = true;
-                resultElement.textContent = inputtedState + " STATE IS ACCEPTED FOR"
+                resultElement.textContent = inputtedState + " STATE IS ACCEPTED FOR";
             }
 
-            resultElement.textContent += " (" + key + ")"
-            resultElement.style.color = "green"
+            resultElement.textContent += " (" + key + ")";
+            resultElement.style.color = "green";
         }
     })
 
     if (!is_state_exists) {
-        resultElement.textContent = inputtedState + " STATE IS NOT ACCEPTED FOR ALL"
-        resultElement.style.color = "red"
+        resultElement.textContent = inputtedState + " STATE IS NOT ACCEPTED FOR ALL";
+        resultElement.style.color = "red";
     } 
     
-    
 }
+
+fetch(jsonUrl)
+    .then(response => response.json()
+        .then((data) => {
+            jsonData = data;
+            finishLoading();
+        })
+    )
+    .catch(error => errorDisplay("An error has occured!\n Please retry!", error));
+
+
+resultElement.textContent = "Loading...";
+resultElement.style.color = "black";
