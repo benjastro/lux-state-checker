@@ -18,6 +18,7 @@ camp_states.set("FE", [
 camp_states.set("ACA", [
     "AL",
     "AZ",
+    "DE",
     "IA",
     "IL",
     "IN",
@@ -26,16 +27,17 @@ camp_states.set("ACA", [
     "MI",
     "MO",
     "MS",
-    "NC",
     "NE",
     "NH",
+    "NY",
     "OH",
     "OK",
     "SC",
-    "TN",
     "TX",
     "UT",
     "WI",
+    "WV",
+    "WY",
 ])
 
 camp_states.set("SSDI", [
